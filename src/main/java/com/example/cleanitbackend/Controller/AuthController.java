@@ -36,18 +36,18 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed. Invalid email or password.");
     }
 
-    @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        // Check if the email is already registered
-        for (User existingUser : users) {
-            if (existingUser.getEmail().equals(user.getEmail())) {
-                return "Registration failed. Email already exists.";
-            }
-        }
+    // @PostMapping("/register")
+    // public String register(@RequestBody User user) {
+    //     // Check if the email is already registered
+    //     for (User existingUser : users) {
+    //         if (existingUser.getEmail().equals(user.getEmail())) {
+    //             return "Registration failed. Email already exists.";
+    //         }
+    //     }
 
-        // Assuming registered users are customers by default
-        user.setRole("Customer");
-        users.add(user);
-        return "Registration successful.";
-    }  
+    //     // Assuming registered users are customers by default
+    //     user.setRole("Customer");
+    //     users.add(user);
+    //     return "Registration successful.";
+    // }  
 }
