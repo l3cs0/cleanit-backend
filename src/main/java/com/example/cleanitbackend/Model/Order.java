@@ -4,27 +4,27 @@ import java.util.Arrays;
 
 public class Order {
     private long id;
-    private String customerId;
+    private String userId;
     private String[] items;
 
     public Order() {
     }
 
-    public Order(long id, String customerId, String[] items) {
+    public Order(long id, String userId, String[] items) {
         this.id = id;
-        this.customerId = customerId;
+        this.userId = userId;
         this.items = items;
     }
 
-    public Order(String customerId, String[] items) {
-        this.customerId = customerId;
+    public Order(String userId, String[] items) {
+        this.userId = userId;
         this.items = items;
     }
 
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", customerId='" + customerId + '\'' +
+                ", userId='" + userId + '\'' +
                 ", items=" + Arrays.toString(items) +
                 '}';
     }
