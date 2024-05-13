@@ -21,9 +21,9 @@ public class AuthController {
 
     public AuthController() {
         // Mocking some initial users
-        users.add(new User(1, "l.sottru@cleanit.com", "User One", "password", "Customer"));
-        users.add(new User(2, "employee@cleanit.com", "User Two", "password", "Employee"));
-        users.add(new User(3, "manager@cleanit.com", "User Three", "password", "Manager"));
+        users.add(new User("1", "l.sottru@cleanit.com", "User One", "password", "Customer"));
+        users.add(new User("2", "employee@cleanit.com", "User Two", "password", "Employee"));
+        users.add(new User("3", "manager@cleanit.com", "User Three", "password", "Manager"));
     }
 
     @PostMapping("/login")

@@ -1,13 +1,13 @@
 package com.example.cleanitbackend.Model;
 
 public class User {
-    private long id;
+    private String id;
     private String email;
     private String name;
     private String password;
     private String role;
 
-    public User(long id, String email, String name, String password, String role) {
+    public User(String id, String email, String name, String password, String role) {
         this.id = id;
         this.email = email;
         this.name = name;
