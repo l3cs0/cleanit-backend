@@ -1,4 +1,4 @@
-package com.example.cleanitbackend.Order;
+package com.example.cleanitbackend.Model;
 
 public class Item {
     private long id;
