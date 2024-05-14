@@ -1,5 +1,4 @@
 package com.example.cleanitbackend.Model;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Arrays;
 
