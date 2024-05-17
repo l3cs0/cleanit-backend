@@ -1,4 +1,6 @@
 package com.example.cleanitbackend.Controller;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +22,11 @@ import com.example.cleanitbackend.Model.Order;
 @RestController
 public class OrderController {
     private final List<Order> orders = new ArrayList<>();
+    private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
 
     @GetMapping("/orders")
     public ResponseEntity<List<Order>> getAllOrders() {
+        LOGGER.info("Getting all orders");
         return ResponseEntity.ok(orders);
     }
 
@@ -35,12 +39,14 @@ public class OrderController {
                 userOrders.add(order);
             }
         }
+        LOGGER.info("Getting orders for user with id: " + userId + " found " + userOrders.size() + " orders.");
         return ResponseEntity.ok(userOrders);
     }
 
     @PostMapping("/order")
     public ResponseEntity<Order> createOrder(@RequestBody Order newOrder) {
         orders.add(newOrder);
+        LOGGER.info("Created new order with id: " + newOrder.getId() + " for user with id: " + newOrder.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
     }
 
@@ -58,6 +64,7 @@ public class OrderController {
 
     @GetMapping("/greeting")
 	public Greeting greeting(@RequestParam(value = "name", defaultValue = "World") String name) {
+        LOGGER.info("Greeting with name: " + name);
 		return new Greeting(counter.incrementAndGet(), String.format(template, name));
 	}
 
