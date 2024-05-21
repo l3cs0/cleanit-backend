@@ -41,7 +41,7 @@ public class AuthController {
         for (User user : users) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 LOGGER.info("User with email: " + email + " logged in.");
-                return ResponseEntity.ok(new AuthResponse("Login successful. User role: " + user.getRole(), user.getRole(), user.getName()));
+                return ResponseEntity.ok(new AuthResponse("Login successful. User role: " + user.getRole(), user.getRole(), user.getName(), user.getId()));
             }
         }
         LOGGER.info("Login failed for user with email: " + email);
@@ -69,7 +69,7 @@ public class AuthController {
         User user = new User(userCounter.incrementAndGet(), userDto.getEmail(), userDto.getName(), userDto.getPassword(), "Customer");
         users.add(user);
         LOGGER.info("User with email: " + user.getEmail() + " registered.");
-        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse("Registration successful.", user.getRole(), user.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse("Registration successful.", user.getRole(), user.getName(), user.getId()));
     }  
 
     
