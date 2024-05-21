@@ -41,18 +41,18 @@ public class AuthController {
         for (User user : users) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 LOGGER.info("User with email: " + email + " logged in.");
-                return ResponseEntity.ok(new AuthResponse("Login successful. User role: " + user.getRole(), user.getRole()));
+                return ResponseEntity.ok(new AuthResponse("Login successful. User role: " + user.getRole(), user.getRole(), user.getName()));
             }
         }
         LOGGER.info("Login failed for user with email: " + email);
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse("Login failed. Invalid email or password.", null));
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse("Login failed. Invalid email or password.", null, null));
     }
 
     @PostMapping("/logout")
     public ResponseEntity<AuthResponse> logout() {
         // Perform logout logic here
         LOGGER.info("User logged out.");
-        return ResponseEntity.ok(new AuthResponse("Logout successful.", null));
+        return ResponseEntity.ok(new AuthResponse("Logout successful.", null, null));
     }
 
     @PostMapping("/register")
@@ -62,14 +62,14 @@ public class AuthController {
             if (existingUser.getEmail().equals(userDto.getEmail())) {
                 LOGGER.info("Registration failed. Email already exists.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body(new AuthResponse("Registration failed. Email already exists.", null));
+                .body(new AuthResponse("Registration failed. Email already exists.", null, null));
             }
         }
 
         User user = new User(userCounter.incrementAndGet(), userDto.getEmail(), userDto.getName(), userDto.getPassword(), "Customer");
         users.add(user);
         LOGGER.info("User with email: " + user.getEmail() + " registered.");
-        return ResponseEntity.ok(new AuthResponse("Registration successful.", user.getRole()));
+        return ResponseEntity.ok(new AuthResponse("Registration successful.", user.getRole(), user.getName()));
     }  
 
     @GetMapping("/customers")
