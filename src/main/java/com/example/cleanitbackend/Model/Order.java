@@ -5,19 +5,19 @@ import java.util.Arrays;
 public class Order {
 
     private long id;
-    private String userId;
+    private long userId;
     private String[] items;
 
     public Order() {
     }
 
-    public Order(long id, String userId, String[] items) {
+    public Order(long id, long userId, String[] items) {
         this.id = id;
         this.userId = userId;
         this.items = items;
     }
 
-    public Order(String userId, String[] items) {
+    public Order(long userId, String[] items) {
         this.userId = userId;
         this.items = items;
     }
@@ -38,11 +38,11 @@ public class Order {
         this.id = id;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(long userId) {
         this.userId = userId;
     }
 

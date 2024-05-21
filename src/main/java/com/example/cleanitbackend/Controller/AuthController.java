@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.cleanitbackend.Dto.UserDto;
 import com.example.cleanitbackend.Model.AuthResponse;
 import com.example.cleanitbackend.Model.User;
 
@@ -55,17 +56,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody User user) {
+    public ResponseEntity<AuthResponse> register(@RequestBody UserDto userDto) {
         // Check if the email is already registered
         for (User existingUser : users) {
-            if (existingUser.getEmail().equals(user.getEmail())) {
+            if (existingUser.getEmail().equals(userDto.getEmail())) {
                 LOGGER.info("Registration failed. Email already exists.");
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new AuthResponse("Registration failed. Email already exists.", null));
             }
         }
 
-        user.setRole("Customer");
+        User user = new User(userCounter.incrementAndGet(), userDto.getEmail(), userDto.getName(), userDto.getPassword(), "Customer");
         users.add(user);
         LOGGER.info("User with email: " + user.getEmail() + " registered.");
         return ResponseEntity.ok(new AuthResponse("Registration successful.", user.getRole()));

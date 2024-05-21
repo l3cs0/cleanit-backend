@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.cleanitbackend.Dto.OrderDto;
 import com.example.cleanitbackend.Model.Order;
 
 @CrossOrigin(origins = {"http://localhost:4200", "http://frontend:4200"})
@@ -26,10 +27,10 @@ public class OrderController {
     
     public OrderController() {
         LOGGER.info("Creating initial orders");
-        orders.add(new Order(orderCounter.incrementAndGet(), "user1", new String[]{"item1", "item2"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), "user2", new String[]{"item3", "item4"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), "user2", new String[]{"item1", "item2"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), "user3", new String[]{"item3", "item4"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 1, new String[]{"item1", "item2"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 2, new String[]{"item3", "item4"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 3, new String[]{"item1", "item2"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 4, new String[]{"item3", "item4"}));
     }
 
     @GetMapping("/orders")
@@ -39,11 +40,11 @@ public class OrderController {
     }
 
     @GetMapping("/ordersByUserId")
-    public ResponseEntity<List<Order>> getOrdersForUserid(@RequestParam String userId) {
+    public ResponseEntity<List<Order>> getOrdersForUserid(@RequestParam long userId) {
         List<Order> userOrders = new ArrayList<>();
         
         for (Order order : orders) {
-            if (order.getUserId().equals(userId)) {
+            if (order.getUserId() == userId) {
                 userOrders.add(order);
             }
         }
@@ -52,10 +53,11 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<Order> createOrder(@RequestBody Order newOrder) {
-        orders.add(newOrder);
-        LOGGER.info("Created new order with id: " + newOrder.getId() + " for user with id: " + newOrder.getUserId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(newOrder);
+    public ResponseEntity<Order> createOrder(@RequestBody OrderDto OrderDto) {
+        Order order = new Order(orderCounter.incrementAndGet(), OrderDto.getUserId(), OrderDto.getItems());
+        orders.add(order);
+        LOGGER.info("Created new order with id: " + order.getId() + " for user with id: " + order.getUserId());
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 
 }
