@@ -69,8 +69,10 @@ public class AuthController {
         User user = new User(userCounter.incrementAndGet(), userDto.getEmail(), userDto.getName(), userDto.getPassword(), "Customer");
         users.add(user);
         LOGGER.info("User with email: " + user.getEmail() + " registered.");
-        return ResponseEntity.ok(new AuthResponse("Registration successful.", user.getRole(), user.getName()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new AuthResponse("Registration successful.", user.getRole(), user.getName()));
     }  
+
+    
 
     @GetMapping("/customers")
     public ResponseEntity<List<User>> getAllCustomers() {

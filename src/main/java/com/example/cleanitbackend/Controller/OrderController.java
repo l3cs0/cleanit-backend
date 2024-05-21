@@ -27,10 +27,10 @@ public class OrderController {
     
     public OrderController() {
         LOGGER.info("Creating initial orders");
-        orders.add(new Order(orderCounter.incrementAndGet(), 1, new String[]{"item1", "item2"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), 2, new String[]{"item3", "item4"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), 3, new String[]{"item1", "item2"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), 4, new String[]{"item3", "item4"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 1, "note1", new String[]{"item1", "item2"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 2, "note2", new String[]{"item3", "item4"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 3, "note3", new String[]{"item1", "item2"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 4, "note4", new String[]{"item3", "item4"}));
     }
 
     @GetMapping("/orders")
@@ -54,7 +54,7 @@ public class OrderController {
 
     @PostMapping("/order")
     public ResponseEntity<Order> createOrder(@RequestBody OrderDto OrderDto) {
-        Order order = new Order(orderCounter.incrementAndGet(), OrderDto.getUserId(), OrderDto.getItems());
+        Order order = new Order(orderCounter.incrementAndGet(), OrderDto.getUserId(), OrderDto.getNotes(), OrderDto.getItems());
         orders.add(order);
         LOGGER.info("Created new order with id: " + order.getId() + " for user with id: " + order.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(order);

@@ -6,14 +6,16 @@ public class Order {
 
     private long id;
     private long userId;
+    private String notes;
     private String[] items;
 
     public Order() {
     }
 
-    public Order(long id, long userId, String[] items) {
+    public Order(long id, long userId, String notes,String[] items) {
         this.id = id;
         this.userId = userId;
+        this.notes = notes;
         this.items = items;
     }
 
@@ -44,6 +46,14 @@ public class Order {
 
     public void setUserId(long userId) {
         this.userId = userId;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String[] getItems() {
