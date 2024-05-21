@@ -2,12 +2,14 @@ package com.example.cleanitbackend.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,13 +23,16 @@ import com.example.cleanitbackend.Model.User;
 public class AuthController {
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthController.class);
     private List<User> users = new ArrayList<>();
+    private AtomicLong userCounter = new AtomicLong();
 
     public AuthController() {
-        // Mocking some initial users
         LOGGER.info("Creating initial users");
-        users.add(new User("user1", "l.sottru@cleanit.com", "User One", "password", "Customer"));
-        users.add(new User("user2", "employee@cleanit.com", "User Two", "password", "Employee"));
-        users.add(new User("user3", "manager@cleanit.com", "User Three", "password", "Manager"));
+        users.add(new User(userCounter.incrementAndGet(), "customer1@cleanit.com", "Customer One", "password", "Customer"));
+        users.add(new User(userCounter.incrementAndGet(), "customer2@cleanit.com", "Customer Two", "password", "Customer"));
+        users.add(new User(userCounter.incrementAndGet(), "customer3@cleanit.com", "Customer Three", "password", "Customer"));
+        users.add(new User(userCounter.incrementAndGet(), "customer4@cleanit.com", "Customer Four", "password", "Customer"));
+        users.add(new User(userCounter.incrementAndGet(), "employee@cleanit.com", "Employee", "password", "Employee"));
+        users.add(new User(userCounter.incrementAndGet(), "manager@cleanit.com", "Manager", "password", "Manager"));
     }
 
     @PostMapping("/login")
@@ -42,6 +47,13 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new AuthResponse("Login failed. Invalid email or password.", null));
     }
 
+    @PostMapping("/logout")
+    public ResponseEntity<AuthResponse> logout() {
+        // Perform logout logic here
+        LOGGER.info("User logged out.");
+        return ResponseEntity.ok(new AuthResponse("Logout successful.", null));
+    }
+
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody User user) {
         // Check if the email is already registered
@@ -53,10 +65,22 @@ public class AuthController {
             }
         }
 
-        // Assuming registered users are customers by default
         user.setRole("Customer");
         users.add(user);
         LOGGER.info("User with email: " + user.getEmail() + " registered.");
         return ResponseEntity.ok(new AuthResponse("Registration successful.", user.getRole()));
     }  
+
+    @GetMapping("/customers")
+    public ResponseEntity<List<User>> getAllCustomers() {
+        LOGGER.info("Retrieving all users");
+        List<User> customerUsers = new ArrayList<>();
+        for (User user : users) {
+            if (user.getRole().equals("Customer")) {
+                User customerUser = new User(user.getId(), user.getEmail(), user.getName(), null, user.getRole());
+                customerUsers.add(customerUser);
+            }
+        }
+        return ResponseEntity.ok(customerUsers);
+    }
 }

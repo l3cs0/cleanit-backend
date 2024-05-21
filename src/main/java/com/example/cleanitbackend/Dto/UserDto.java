@@ -1,21 +1,17 @@
-package com.example.cleanitbackend.Model;
+package com.example.cleanitbackend.Dto;
 
-public class User {
-    private long id;
+public class UserDto {
+
     private String email;
     private String name;
     private String password;
     private String role;
 
-    public User(long id, String email, String name, String password, String role) {
-        this.id = id;
+    public UserDto(String email, String name, String password, String role) {
         this.email = email;
         this.name = name;
         this.password = password;
         this.role = role;
-    }
-    public long getId() {
-        return id;
     }
 
     public String getEmail() {
