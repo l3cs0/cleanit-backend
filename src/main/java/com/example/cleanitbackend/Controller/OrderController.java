@@ -4,8 +4,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -17,20 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.cleanitbackend.Dto.OrderDto;
 import com.example.cleanitbackend.Model.Order;
+import com.example.cleanitbackend.Model.User;
 
 @CrossOrigin(origins = {"http://localhost:4200", "http://frontend:4200"})
 @RestController
 public class OrderController {
+    @Autowired
+    private AuthController authController;
     private static final Logger LOGGER = LoggerFactory.getLogger(OrderController.class);
     private final List<Order> orders = new ArrayList<>();
     private AtomicLong orderCounter = new AtomicLong();
     
     public OrderController() {
         LOGGER.info("Creating initial orders");
-        orders.add(new Order(orderCounter.incrementAndGet(), 1, "note1", new String[]{"item1", "item2"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), 2, "note2", new String[]{"item3", "item4"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), 3, "note3", new String[]{"item1", "item2"}));
-        orders.add(new Order(orderCounter.incrementAndGet(), 4, "note4", new String[]{"item3", "item4"}));
+        orders.add(new Order(orderCounter.incrementAndGet(), 1, "note1", new String[]{"item1", "item2"}, "Customer One"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 2, "note2", new String[]{"item3", "item4"}, "Customer Two"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 3, "note3", new String[]{"item1", "item2"}, "Customer Three"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 4, "note4", new String[]{"item3", "item4"}, "Customer Four"));
     }
 
     @GetMapping("/orders")
@@ -52,9 +57,34 @@ public class OrderController {
         return ResponseEntity.ok(userOrders);
     }
 
+    @GetMapping("/ordersByUserName")
+    public ResponseEntity<List<Order>> getOrdersForUserName(@RequestParam String userName) {
+        List<Order> userOrders = new ArrayList<>();
+
+        // Convert userName to lowercase
+        String lowerCaseUserName = userName.toLowerCase();
+
+        for (Order order : orders) {
+            // Convert order.getUserName() to lowercase
+            String lowerCaseOrderUserName = order.getUserName().toLowerCase();
+            
+            if (lowerCaseOrderUserName.contains(lowerCaseUserName)) {
+                userOrders.add(order);
+            }
+        }
+        
+        LOGGER.info("Getting orders for user with name: " + userName + " found " + userOrders.size() + " orders.");
+        return ResponseEntity.ok(userOrders);
+    }
+
     @PostMapping("/order")
     public ResponseEntity<Order> createOrder(@RequestBody OrderDto OrderDto) {
-        Order order = new Order(orderCounter.incrementAndGet(), OrderDto.getUserId(), OrderDto.getNotes(), OrderDto.getItems());
+        Optional<User> user = authController.getUserById(OrderDto.getUserId());
+        if (!user.isPresent()) {
+            LOGGER.info("User with id: " + OrderDto.getUserId() + " not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        Order order = new Order(orderCounter.incrementAndGet(), OrderDto.getUserId(), OrderDto.getNotes(), OrderDto.getItems(), user.get().getName());
         orders.add(order);
         LOGGER.info("Created new order with id: " + order.getId() + " for user with id: " + order.getUserId());
         return ResponseEntity.status(HttpStatus.CREATED).body(order);

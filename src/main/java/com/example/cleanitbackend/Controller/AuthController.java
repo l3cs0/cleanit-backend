@@ -2,6 +2,7 @@ package com.example.cleanitbackend.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.slf4j.Logger;
@@ -85,5 +86,11 @@ public class AuthController {
             }
         }
         return ResponseEntity.ok(customerUsers);
+    }
+
+    public Optional<User> getUserById(Long userId) {
+        return users.stream()
+                .filter(user -> user.getId() == userId)
+                .findFirst();
     }
 }
