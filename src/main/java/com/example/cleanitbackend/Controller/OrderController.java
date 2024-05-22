@@ -32,9 +32,15 @@ public class OrderController {
     
     public OrderController() {
         LOGGER.info("Creating initial orders");
-        orders.add(new Order(orderCounter.incrementAndGet(), 1, "note1", new String[]{"item1", "item2"}, "Customer One"));
-        orders.add(new Order(orderCounter.incrementAndGet(), 2, "note2", new String[]{"item3", "item4"}, "Customer Two"));
-        orders.add(new Order(orderCounter.incrementAndGet(), 3, "note3", new String[]{"item1", "item2"}, "Customer Three"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 1, "note1", new String[]{"item1", "item2"}, "Leon One"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 2, "note2", new String[]{"item3", "item4"}, "Luisa Two"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 3, "note3", new String[]{"item1", "item2"}, "Leopold Three"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 1, "note4", new String[]{"item5", "item6"}, "Leon One"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 1, "note5", new String[]{"item7", "item8"}, "Leon One"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 2, "note6", new String[]{"item9", "item10"}, "Luisa Two"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 2, "note7", new String[]{"item11", "item12"}, "Luisa Two"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 3, "note8", new String[]{"item13", "item14"}, "Leopold Three"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 3, "note9", new String[]{"item15", "item16"}, "Leopold Three"));
         orders.add(new Order(orderCounter.incrementAndGet(), 4, "note4", new String[]{"item3", "item4"}, "Customer Four"));
     }
 
@@ -61,11 +67,9 @@ public class OrderController {
     public ResponseEntity<List<Order>> getOrdersForUserName(@RequestParam String userName) {
         List<Order> userOrders = new ArrayList<>();
 
-        // Convert userName to lowercase
         String lowerCaseUserName = userName.toLowerCase();
 
         for (Order order : orders) {
-            // Convert order.getUserName() to lowercase
             String lowerCaseOrderUserName = order.getUserName().toLowerCase();
             
             if (lowerCaseOrderUserName.contains(lowerCaseUserName)) {

@@ -29,9 +29,9 @@ public class AuthController {
 
     public AuthController() {
         LOGGER.info("Creating initial users");
-        users.add(new User(userCounter.incrementAndGet(), "customer1@cleanit.com", "Customer One", "password", "Customer"));
-        users.add(new User(userCounter.incrementAndGet(), "customer2@cleanit.com", "Customer Two", "password", "Customer"));
-        users.add(new User(userCounter.incrementAndGet(), "customer3@cleanit.com", "Customer Three", "password", "Customer"));
+        users.add(new User(userCounter.incrementAndGet(), "customer1@cleanit.com", "Leon One", "password", "Customer"));
+        users.add(new User(userCounter.incrementAndGet(), "customer2@cleanit.com", "Luisa Two", "password", "Customer"));
+        users.add(new User(userCounter.incrementAndGet(), "customer3@cleanit.com", "Leopold Three", "password", "Customer"));
         users.add(new User(userCounter.incrementAndGet(), "customer4@cleanit.com", "Customer Four", "password", "Customer"));
         users.add(new User(userCounter.incrementAndGet(), "employee@cleanit.com", "Employee", "password", "Employee"));
         users.add(new User(userCounter.incrementAndGet(), "manager@cleanit.com", "Manager", "password", "Manager"));
