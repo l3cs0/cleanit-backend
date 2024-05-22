@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.cleanitbackend.Dto.LoginRequestDto;
 import com.example.cleanitbackend.Dto.UserDto;
 import com.example.cleanitbackend.Model.AuthResponse;
 import com.example.cleanitbackend.Model.User;
@@ -38,7 +39,9 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestParam String email, @RequestParam String password) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequestDto loginRequest) {
+        String email = loginRequest.getEmail();
+        String password = loginRequest.getPassword();
         for (User user : users) {
             if (user.getEmail().equals(email) && user.getPassword().equals(password)) {
                 LOGGER.info("User with email: " + email + " logged in.");
