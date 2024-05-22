@@ -37,10 +37,9 @@ public class OrderController {
         orders.add(new Order(orderCounter.incrementAndGet(), 3, "note3", new String[]{"item1", "item2"}, "Leopold Three"));
         orders.add(new Order(orderCounter.incrementAndGet(), 1, "note4", new String[]{"item5", "item6"}, "Leon One"));
         orders.add(new Order(orderCounter.incrementAndGet(), 1, "note5", new String[]{"item7", "item8"}, "Leon One"));
-        orders.add(new Order(orderCounter.incrementAndGet(), 2, "note6", new String[]{"item9", "item10"}, "Luisa Two"));
+        orders.add(new Order(orderCounter.incrementAndGet(), 1, "note6", new String[]{"item9", "item10"}, "Leon One"));
         orders.add(new Order(orderCounter.incrementAndGet(), 2, "note7", new String[]{"item11", "item12"}, "Luisa Two"));
         orders.add(new Order(orderCounter.incrementAndGet(), 3, "note8", new String[]{"item13", "item14"}, "Leopold Three"));
-        orders.add(new Order(orderCounter.incrementAndGet(), 3, "note9", new String[]{"item15", "item16"}, "Leopold Three"));
         orders.add(new Order(orderCounter.incrementAndGet(), 4, "note4", new String[]{"item3", "item4"}, "Customer Four"));
     }
 
